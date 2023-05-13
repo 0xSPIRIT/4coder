@@ -1,0 +1,4 @@
+- Make jumps work (search)
+- Visual block mode isn't drawing properly.
+- Add more places for vim push jumps.
+   - Upon ctrl+u
