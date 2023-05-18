@@ -389,6 +389,8 @@ typedef int socklen_t;
 #endif
 // }
 
+#include "spirit_search.h"
+
 //~ NOTE(rjf): Macros and pragmase stuff that have to be put here for various
 // reasons
 #include <stdlib.h>
@@ -400,6 +402,12 @@ typedef int socklen_t;
 #define COMMAND_SERVER_PORT 4041
 #define COMMAND_SERVER_UPDATE_PERIOD_MS 200
 #define COMMAND_SERVER_AUTO_LAUNCH_IF_FILE_PRESENT "project_namespaces.txt"
+
+//~ @SPIRIT
+#include "spirit_search.cpp"
+#include "4coder_spirit_base_commands.h"
+#include "spirit_buffer_switch.cpp"
+#include "spirit_jumps.cpp"
 
 //~ NOTE(rjf): @f4_headers
 #include "4coder_fleury_ubiquitous.h"
@@ -625,19 +633,31 @@ CUSTOM_DOC("Fleury startup event")
             view_set_buffer(app, compilation_view, comp_id, 0);
         }
         
-        view_set_active(app, view);
-        
         // NOTE(rjf): Restore Active to Left
         view_set_active(app, view);
     }
     
     //~ NOTE(rjf): Auto-Load Project.
     {
+        View_ID view = get_active_view(app, Access_Always);
+        
         b32 auto_load = def_get_config_b32(vars_save_string_lit("automatically_load_project"));
         if (auto_load)
         {
             load_project(app);
         }
+        Buffer_ID id = get_buffer_by_name(app, string_u8_litexpr("main.c"), Access_Always);
+        if (id != 0) {
+            view_set_buffer(app, view, id, 0);
+        }
+    }
+    
+    //~ NOTE(spirit): Load the file from argument @SPIRIT
+    if (file_names.count > 0) {
+        String_Const_u8 front = string_front_of_path(file_names.vals[0]);
+        View_ID view = get_active_view(app, Access_Always);
+        Buffer_ID buffer = get_buffer_by_name(app, front, Access_Always);
+        view_set_buffer(app, view, buffer, 0);
     }
     
     //~ NOTE(rjf): Set misc options.
@@ -729,6 +749,4 @@ CUSTOM_DOC("Fleury startup event")
         def_enable_virtual_whitespace = def_get_config_b32(vars_save_string_lit("enable_virtual_whitespace"));
         clear_all_layouts(app);
     }
-    
-    set_window_title(app, string_u8_litexpr("4coder"));
 }

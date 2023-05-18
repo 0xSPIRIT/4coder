@@ -78,13 +78,13 @@ CUSTOM_DOC("Sets the right size of the view near the x position of the cursor.")
 
 CUSTOM_COMMAND_SIG(vim_move_up_to_blank_line)
 {
-    vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+    spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
     move_up_to_blank_line(app);
 }
 
 CUSTOM_COMMAND_SIG(vim_move_down_to_blank_line)
 {
-    vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+    spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
     move_down_to_blank_line(app);
 }
 
@@ -377,7 +377,7 @@ VIM_COMMAND_SIG(vim_modal_0){
 
 
 VIM_COMMAND_SIG(vim_paragraph_up){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 	vim_state.params.clusivity = VIM_Exclusive;
@@ -387,7 +387,7 @@ VIM_COMMAND_SIG(vim_paragraph_up){
 }
 
 VIM_COMMAND_SIG(vim_paragraph_down){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 	vim_state.params.clusivity = VIM_Exclusive;
@@ -504,7 +504,7 @@ VIM_COMMAND_SIG(vim_backward_END){
 }
 
 VIM_COMMAND_SIG(vim_bounce){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	Scan_Direction direction = Scan_Forward;
 	Input_Event event = get_current_input(app).event;
@@ -711,7 +711,7 @@ VIM_COMMAND_SIG(vim_goto_mark){
 		if(marks){
 			i64 pos = marks[c-'a'];
 			if(pos > 0){
-				vim_push_jump(app, view);
+				spirit_push_jump(app, view);
 				Vim_Motion_Block vim_motion_block(app);
 				view_set_cursor_and_preferred_x(app, view, seek_pos(pos));
 			}else{
@@ -721,10 +721,10 @@ VIM_COMMAND_SIG(vim_goto_mark){
 		}
 	}
 	else if(in_range('A', c, 'Z'+1)){
-		vim_push_jump(app, view);
+		spirit_push_jump(app, view);
 		Vim_Global_Mark mark = vim_global_marks[c-'A'];
 		if(mark.buffer_id.id){
-			vim_push_jump(app, view);
+			spirit_push_jump(app, view);
 			view_set_buffer(app, view, mark.buffer_id.id, 0);
 			view_set_cursor_and_preferred_x(app, view, seek_pos(mark.pos));
 		}else{
@@ -753,7 +753,7 @@ VIM_COMMAND_SIG(vim_goto_mark){
 
 
 VIM_COMMAND_SIG(vim_open_file_in_quotes){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	View_ID view = get_active_view(app, Access_ReadVisible);
 	Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
 	if(buffer_exists(app, buffer)){
@@ -776,7 +776,7 @@ VIM_COMMAND_SIG(vim_open_file_in_quotes){
 
 		String_Const_u8 new_file_name = push_u8_stringf(scratch, "%.*s/%.*s", string_expand(path), string_expand(quoted_name));
 
-		vim_push_jump(app, view);
+		spirit_push_jump(app, view);
 		view = get_next_view_looped_primary_panels(app, view, Access_Always);
 		if(view && view_open_file(app, view, new_file_name, true)){
 			view_set_active(app, view);
@@ -785,24 +785,24 @@ VIM_COMMAND_SIG(vim_open_file_in_quotes){
 }
 
 VIM_COMMAND_SIG(vim_goto_definition_other_window){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
     f4_go_to_definition(app);
 }
 
 VIM_COMMAND_SIG(vim_goto_definition){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
     f4_go_to_definition_same_panel(app);
 }
 VIM_COMMAND_SIG(vim_next_4coder_jump){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	goto_next_jump(app);
 }
 VIM_COMMAND_SIG(vim_prev_4coder_jump){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	goto_prev_jump(app);
 }
 VIM_COMMAND_SIG(vim_first_4coder_jump){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	goto_first_jump(app);
 }
 
@@ -919,7 +919,7 @@ CUSTOM_COMMAND_SIG(q)
 CUSTOM_DOC("Vim: Close panel") { close_panel(app); }
 
 CUSTOM_COMMAND_SIG(qk)
-CUSTOM_DOC("Vim: Attempt to kill buffer and close panel") { vim_try_buffer_kill(app); close_panel(app); }
+CUSTOM_DOC("Vim: Attempt to kill buffer and close panel") { vim_try_spirit_buffer_kill(app); close_panel(app); }
 
 CUSTOM_COMMAND_SIG(qa)
 CUSTOM_DOC("Vim: Attempt to exit") { exit_4coder(app); }

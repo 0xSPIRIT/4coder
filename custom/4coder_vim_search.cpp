@@ -18,7 +18,7 @@ function void vim_in_pattern_inner(Application_Links *app, Buffer_Seek_String_Fl
 	Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
 	i64 buffer_size = buffer_get_size(app, buffer);
 	if(new_pos > 0 && new_pos != buffer_size){
-		vim_push_jump(app, view);
+		spirit_push_jump(app, view);
 		Vim_Motion_Block vim_motion_block(app, new_pos + pattern->size-1);
 		view_set_cursor_and_preferred_x(app, view, seek_pos(new_pos));
 	}
@@ -30,7 +30,7 @@ function void vim_to_pattern_inner(Application_Links *app, Buffer_Seek_String_Fl
 	i64 buffer_size = buffer_get_size(app, buffer);
 	i64 new_pos = vim_pattern_inner_v(app, seek_flags);
 	if(new_pos > 0 && new_pos != buffer_size){
-		vim_push_jump(app, view);
+		spirit_push_jump(app, view);
 		Vim_Motion_Block vim_motion_block(app);
 		view_set_cursor_and_preferred_x(app, view, seek_pos(new_pos));
 	}

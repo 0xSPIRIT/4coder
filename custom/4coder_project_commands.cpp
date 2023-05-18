@@ -103,10 +103,13 @@ prj_close_files_with_ext(Application_Links *app, String8Array extension_array){
         }
         
         for (i32 i = 0; i < buffers_to_close_count; ++i){
-            buffer_kill(app, buffers_to_close[i], BufferKill_AlwaysKill);
+            spirit_buffer_kill(app, buffers_to_close[i], BufferKill_AlwaysKill);
         }
     }while(do_repeat);
 }
+
+
+global b32 spirit_first = true; // @spirit
 
 function void
 prj_open_files_pattern_filter__rec(Application_Links *app, String8 path, Prj_Pattern_List whitelist, Prj_Pattern_List blacklist, Prj_Open_File_Flags flags){
@@ -137,7 +140,12 @@ prj_open_files_pattern_filter__rec(Application_Links *app, String8 path, Prj_Pat
                 continue;
             }
             String8 full_path = push_u8_stringf(scratch, "%.*s%.*s", string_expand(path), string_expand(file_name));
-            create_buffer(app, full_path, 0);
+            Buffer_ID buf = create_buffer(app, full_path, 0);
+            // @spirit
+            if (spirit_first) {
+                view_set_buffer(app, get_active_view(app, Access_Always), buf, 0);
+                spirit_first = false;
+            }
         }
     }
 }
@@ -967,11 +975,7 @@ CUSTOM_DOC("Looks for a project.4coder file in the current directory and tries t
     if (proj_name_id != 0){
         String8 proj_name = vars_read_string(scratch, proj_name_id);
         
-        View_ID view = get_active_view(app, Access_ReadWriteVisible);
-        Buffer_ID current_buffer = view_get_buffer(app, view, Access_Always);
-        Buffer_Identifier curbuf = buffer_identifier(current_buffer);
-        
-        String8 title = push_u8_stringf(scratch, "4coder - %.*s", string_expand(proj_name), curbuf.name);
+        String8 title = push_u8_stringf(scratch, "4coder - %.*s", string_expand(proj_name));
         set_window_title(app, title);
     }
 }

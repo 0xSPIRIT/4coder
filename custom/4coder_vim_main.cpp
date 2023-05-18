@@ -81,7 +81,7 @@ EXAMPLE_render_buffer(Application_Links *app, View_ID view_id, Face_ID face_id, 
 		vim_draw_visual_mode(app, view_id, buffer, face_id, text_layout_id);
 	}
 
-	vim_draw_search_highlight(app, view_id, buffer, text_layout_id, cursor_roundness);
+	//vim_draw_search_highlight(app, view_id, buffer, text_layout_id, cursor_roundness);
 
 	switch(fcoder_mode){
 		case FCoderMode_Original:

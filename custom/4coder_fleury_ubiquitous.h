@@ -23,7 +23,7 @@ static Rect_f32 global_last_mark_rect = {0};
 static b32 global_dark_mode = 1;
 static b32 global_battery_saver = 0;
 static View_ID global_compilation_view = 0;
-static b32 global_compilation_view_expanded = 0;
+static i32 global_compilation_view_expanded = 0; // @SPIRIT Changed from b32 to i32. 0 = Closed, 1 = Half open, 2 = Wide Open
 global Arena permanent_arena = {};
 
 #define MemorySet                 memset

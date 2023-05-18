@@ -243,6 +243,7 @@ set_view_to_location(Application_Links *app, View_ID view, Buffer_ID buffer, Buf
 
 function void
 jump_to_location(Application_Links *app, View_ID view, Buffer_ID buffer, i64 pos){
+    //spirit_push_jump(app, view);
     view_set_active(app, view);
     set_view_to_location(app, view, buffer, seek_pos(pos));
     if (auto_center_after_jumps){
@@ -253,6 +254,7 @@ jump_to_location(Application_Links *app, View_ID view, Buffer_ID buffer, i64 pos
 function void
 jump_to_location(Application_Links *app, View_ID view, Buffer_ID buffer,
                  Name_Line_Column_Location location){
+    //spirit_push_jump(app, view);
     view_set_active(app, view);
     set_view_to_location(app, view, buffer, seek_line_col(location.line, location.column));
     if (auto_center_after_jumps){
@@ -265,6 +267,7 @@ jump_to_location(Application_Links *app, View_ID view,
                  Name_Line_Column_Location location){
     Buffer_ID buffer = 0;
     if (get_jump_buffer(app, &buffer, &location)){
+        //spirit_push_jump(app, view);
         jump_to_location(app, view, buffer, location);
     }
 }
@@ -282,6 +285,7 @@ function void
 jump_to_location(Application_Links *app, View_ID view, String_Const_u8 location){
     Parsed_Jump jump = parse_jump_location(location);
     if (jump.success){
+        //spirit_push_jump(app, view);
         jump_to_location(app, view, jump.location);
     }
 }

@@ -23,7 +23,7 @@ VIM_COMMAND_SIG(vim_end_line){
 
 function void vim_scroll_inner(Application_Links *app, f32 ratio){
 	View_ID view = get_active_view(app, Access_ReadVisible);
-	vim_push_jump(app, view);
+	spirit_push_jump(app, view);
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 
@@ -39,7 +39,7 @@ function void vim_scroll_inner(Application_Links *app, f32 ratio){
 }
 
 VIM_COMMAND_SIG(vim_file_top){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 	goto_beginning_of_file(app);
@@ -48,7 +48,7 @@ VIM_COMMAND_SIG(vim_file_top){
 
 
 VIM_COMMAND_SIG(vim_goto_line){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 	if(vim_state.number == 0){ goto_end_of_file(app); }
@@ -71,7 +71,7 @@ VIM_COMMAND_SIG(vim_goto_column){
 }
 
 VIM_COMMAND_SIG(vim_percent_file){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 	View_ID view = get_active_view(app, Access_ReadVisible);
@@ -88,7 +88,7 @@ function void vim_screen_inner(Application_Links *app, f32 ratio, i32 offset){
 	Vim_Motion_Block vim_motion_block(app);
 	View_ID view = get_active_view(app, Access_ReadVisible);
 	Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
-	vim_push_jump(app, view);
+	spirit_push_jump(app, view);
 	vim_state.params.edit_type = EDIT_LineWise;
 	Buffer_Point buffer_point = view_get_buffer_scroll(app, view).position;
 
@@ -315,7 +315,7 @@ VIM_COMMAND_SIG(vim_set_seek_char){
 }
 
 VIM_COMMAND_SIG(vim_seek_char_forward){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	const i32 N = vim_consume_number();
 	foreach(i,N){ vim_seek_char_inner(app, Scan_Forward); }
@@ -325,7 +325,7 @@ VIM_COMMAND_SIG(vim_seek_char_forward){
 }
 
 VIM_COMMAND_SIG(vim_seek_char_backward){
-	vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+	spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
 	Vim_Motion_Block vim_motion_block(app);
 	const i32 N = vim_consume_number();
 	foreach(i,N){ vim_seek_char_inner(app, Scan_Backward); }
@@ -545,7 +545,7 @@ function void vim_text_object(Application_Links *app){
 	}
 
 	if(range.min && range.max){
-		vim_push_jump(app, view);
+		spirit_push_jump(app, view);
 		{
 			Vim_Motion_Block vim_motion_block(app, range.max);
 			vim_state.params.clusivity = VIM_Inclusive;

@@ -118,10 +118,16 @@ query_user_list_definition_needle(Application_Links *app, Arena *arena){
     return(user_list_definition_array(app, arena, base_needle));
 }
 
+#include "spirit_jumps.h"
+
 internal void
 list_all_locations__generic(Application_Links *app, String_Const_u8_Array needle, List_All_Locations_Flag flags){
     if (needle.count > 0){
-        View_ID target_view = get_next_view_after_active(app, Access_Always);
+        // @SPIRIT
+        
+        //View_ID target_view = get_next_view_after_active(app, Access_Always);
+        View_ID target_view = get_active_view(app, Access_Always);
+        
         String_Match_Flag must_have_flags = 0;
         String_Match_Flag must_not_have_flags = 0;
         if (HasFlag(flags, ListAllLocationsFlag_CaseSensitive)){
@@ -131,7 +137,11 @@ list_all_locations__generic(Application_Links *app, String_Const_u8_Array needle
             AddFlag(must_not_have_flags, StringMatch_LeftSideSloppy);
             AddFlag(must_not_have_flags, StringMatch_RightSideSloppy);
         }
+       
+        View_ID view = get_active_view(app, Access_Always);
+        spirit_push_jump(app, view);
         print_all_matches_all_buffers_to_search(app, needle, must_have_flags, must_not_have_flags, target_view);
+        spirit_push_buffer(app, view_get_buffer(app, view, Access_Always));
     }
 }
 
@@ -168,7 +178,11 @@ list_all_locations__generic_view_range(Application_Links *app, List_All_Location
 CUSTOM_COMMAND_SIG(list_all_locations)
 CUSTOM_DOC("Queries the user for a string and lists all exact case-sensitive matches found in all open buffers.")
 {
-    list_all_locations__generic_query(app, ListAllLocationsFlag_CaseSensitive);
+    List_All_Locations_Flag flags =  ListAllLocationsFlag_CaseSensitive;
+    Scratch_Block scratch(app);
+    u8 *space = push_array(scratch, u8, KB(1));
+    String_Const_u8 needle = get_query_string(app, "List Locations For Exactly: ", space, KB(1));
+    list_all_locations__generic(app, needle, flags);
 }
 
 CUSTOM_COMMAND_SIG(list_all_substring_locations)
@@ -186,7 +200,11 @@ CUSTOM_DOC("Queries the user for a string and lists all exact case-insensitive m
 CUSTOM_COMMAND_SIG(list_all_substring_locations_case_insensitive)
 CUSTOM_DOC("Queries the user for a string and lists all case-insensitive substring matches found in all open buffers.")
 {
-    list_all_locations__generic_query(app, ListAllLocationsFlag_MatchSubstring);
+    List_All_Locations_Flag flags = ListAllLocationsFlag_MatchSubstring;
+    Scratch_Block scratch(app);
+    u8 *space = push_array(scratch, u8, KB(1));
+    String_Const_u8 needle = get_query_string(app, "(Case Insensitive) List Locations For: ", space, KB(1));
+    list_all_locations__generic(app, needle, flags);
 }
 
 CUSTOM_COMMAND_SIG(list_all_locations_of_identifier)

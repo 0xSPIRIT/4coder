@@ -1,4 +1,6 @@
-- Make jumps work (search)
-- Visual block mode isn't drawing properly.
-- Add more places for vim push jumps.
-   - Upon ctrl+u
+- Implement emacs-like isearch.
+    x Add cursor to query bar
+    - Add highlight to the current search string.
+
+- Line wrapping on all *search* windows
+- Move by textual line

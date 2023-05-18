@@ -97,6 +97,7 @@ function void vim_set_prev_visual(Application_Links *app, View_ID view){
 	}
 }
 
+// @SPIRIT This is unused in favor of spirit_push_jump.
 function void vim_push_jump(Application_Links *app, View_ID view){
 	Managed_Scope scope = view_get_managed_scope(app, view);
 	Vim_Jump_List *jump_list = scope_attachment(app, scope, vim_view_jumps, Vim_Jump_List);
@@ -240,14 +241,14 @@ vim_visual_insert_inner(Application_Links *app, View_ID view, Buffer_ID buffer){
 }
 
 VIM_COMMAND_SIG(vim_up){
-	if(vim_state.number >= 10){ vim_push_jump(app, get_active_view(app, Access_ReadVisible)); }
+	if(vim_state.number >= 10){ spirit_push_jump(app, get_active_view(app, Access_ReadVisible)); }
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 	move_vertical_lines(app, -vim_consume_number());
 }
 
 VIM_COMMAND_SIG(vim_down){
-	if(vim_state.number >= 10){ vim_push_jump(app, get_active_view(app, Access_ReadVisible)); }
+	if(vim_state.number >= 10){ spirit_push_jump(app, get_active_view(app, Access_ReadVisible)); }
 	Vim_Motion_Block vim_motion_block(app);
 	vim_state.params.edit_type = EDIT_LineWise;
 	move_vertical_lines(app, vim_consume_number());
@@ -291,7 +292,7 @@ vim_make_request(Application_Links *app, Vim_Request_Type request){
 
 function void vim_page_scroll_inner(Application_Links *app, f32 ratio){
 	View_ID view = get_active_view(app, Access_ReadVisible);
-	vim_push_jump(app, view);
+	spirit_push_jump(app, view);
 
 	f32 scroll_pixels = ratio*get_page_jump(app, view);
 	move_vertical_pixels(app, scroll_pixels);

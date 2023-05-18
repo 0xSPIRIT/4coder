@@ -473,14 +473,14 @@ vim_do_buffer_close_user_check(Application_Links *app, Buffer_ID buffer, View_ID
 }
 
 function Buffer_Kill_Result
-vim_try_buffer_kill(Application_Links *app){
+vim_try_spirit_buffer_kill(Application_Links *app){
 	View_ID view = get_active_view(app, Access_ReadVisible);
 	Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
 	Buffer_Kill_Flag flags = 0;
-	Buffer_Kill_Result result = buffer_kill(app, buffer, flags);
+	Buffer_Kill_Result result = spirit_buffer_kill(app, buffer, flags);
 	if(result == BufferKillResult_Dirty){
 		if(vim_do_buffer_close_user_check(app, buffer, view)){
-			result = buffer_kill(app, buffer, BufferKill_AlwaysKill);
+			result = spirit_buffer_kill(app, buffer, BufferKill_AlwaysKill);
 		}
 	}
 	return result;

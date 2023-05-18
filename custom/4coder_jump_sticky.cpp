@@ -351,6 +351,8 @@ CUSTOM_DOC("If the cursor is found to be on a jump location, parses the jump loc
     Heap *heap = &global_heap;
     
     View_ID view = get_active_view(app, Access_ReadVisible);
+    spirit_push_jump(app, view);
+    
     Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
     Marker_List *list = get_or_make_list_for_buffer(app, heap, buffer);
     
@@ -378,6 +380,8 @@ CUSTOM_DOC("If the cursor is found to be on a jump location, parses the jump loc
     Heap *heap = &global_heap;
     
     View_ID view = get_active_view(app, Access_ReadVisible);
+    spirit_push_jump(app, view);
+    
     Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
     
     Marker_List *list = get_or_make_list_for_buffer(app, heap, buffer);

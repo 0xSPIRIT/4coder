@@ -370,10 +370,32 @@ function void
 draw_query_bar(Application_Links *app, Query_Bar *query_bar, Face_ID face_id, Rect_f32 bar){
     Scratch_Block scratch(app);
     Fancy_Line list = {};
-    push_fancy_string(scratch, &list, fcolor_id(defcolor_pop1)        , query_bar->prompt);
-    push_fancy_string(scratch, &list, fcolor_id(defcolor_text_default), query_bar->string);
     Vec2_f32 p = bar.p0 + V2f32(2.f, 2.f);
+    
+    //push_fancy_string(scratch, &list, fcolor_id(defcolor_pop1)        , query_bar->prompt);
+    //push_fancy_string(scratch, &list, fcolor_id(defcolor_text_default), query_bar->string);
+    
+    const int capacity = 1024;
+    
+    u8 space[capacity] = {0};
+    String_u8 str = Su8(space, 0, capacity);
+    
+    string_append(&str, query_bar->prompt);
+    string_append(&str, query_bar->string);
+    
+    f32 height = 0;
+    {
+        Fancy_String *fancy = push_fancy_string(scratch, 0, face_id, fcolor_id(defcolor_text_default), query_bar->prompt);
+        height = get_fancy_string_text_height(app, face_id, fancy);
+    }
+        
+    Vec2_f32 cursor_start = draw_string(app, face_id, str.string, p, fcolor_id(defcolor_text_default));
+    Rect_f32 cursor_rect = {cursor_start.x, cursor_start.y, cursor_start.x+2, cursor_start.y+height};
+    
+    draw_rectangle_fcolor(app, cursor_rect, 1, fcolor_id(defcolor_cursor));
+    
     draw_fancy_line(app, face_id, fcolor_id(defcolor_at_cursor), &list, p);
+    // @SPIRIT
 }
 
 function void
@@ -839,37 +861,52 @@ default_cursor_sub_id(void){
     return(result);
 }
 
+#if 0
+global b32 spirit_do_cursor_blink = 1;
+global i64 spirit_cursor_blink_timer = 0;
+#define ACTIVE_BLINK(b) (!(((b) / 20) & 0x1))
+#endif
+
 // @spirit
 function void
 spirit_draw_cursor(Application_Links *app, View_ID view_id, b32 is_active_view,
                    Buffer_ID buffer, Text_Layout_ID text_layout_id,
                    f32 roundness, f32 outline_thickness){
-    b32 has_highlight_range = draw_highlight_range(app, view_id, buffer, text_layout_id, roundness);
-    if (!has_highlight_range){
-        i32 cursor_sub_id = default_cursor_sub_id();
-        
-        i64 cursor_pos = view_get_cursor_pos(app, view_id);
-        i64 mark_pos = view_get_mark_pos(app, view_id);
-        if (is_active_view){
-            ARGB_Color argb = fcolor_resolve(fcolor_id(defcolor_insert_cursor_color));
-            Rect_f32 rect = text_layout_character_on_screen(app, text_layout_id, cursor_pos);
-            draw_rectangle(app, rect, roundness, argb);
+#if 0
+    animate_in_n_milliseconds(app, 0);
+    spirit_cursor_blink_timer++;
+    
+    if (ACTIVE_BLINK(spirit_cursor_blink_timer)) {
+#endif
+        b32 has_highlight_range = draw_highlight_range(app, view_id, buffer, text_layout_id, roundness);
+        if (!has_highlight_range){
+            i32 cursor_sub_id = default_cursor_sub_id();
             
-            paint_text_color_pos(app, text_layout_id, cursor_pos,
-                                 fcolor_id(defcolor_at_cursor));
-            draw_character_wire_frame(app, text_layout_id, mark_pos,
-                                      roundness, outline_thickness,
-                                      fcolor_id(defcolor_mark));
+            i64 cursor_pos = view_get_cursor_pos(app, view_id);
+            i64 mark_pos = view_get_mark_pos(app, view_id);
+            if (is_active_view){
+                ARGB_Color argb = fcolor_resolve(fcolor_id(defcolor_insert_cursor_color));
+                Rect_f32 rect = text_layout_character_on_screen(app, text_layout_id, cursor_pos);
+                draw_rectangle(app, rect, roundness, argb);
+                
+                paint_text_color_pos(app, text_layout_id, cursor_pos,
+                                     fcolor_id(defcolor_at_cursor));
+                draw_character_wire_frame(app, text_layout_id, mark_pos,
+                                          roundness, outline_thickness,
+                                          fcolor_id(defcolor_mark));
+            }
+            else{
+                draw_character_wire_frame(app, text_layout_id, mark_pos,
+                                          roundness, outline_thickness,
+                                          fcolor_id(defcolor_mark));
+                draw_character_wire_frame(app, text_layout_id, cursor_pos,
+                                          roundness, outline_thickness,
+                                          fcolor_id(defcolor_cursor, cursor_sub_id));
+            }
         }
-        else{
-            draw_character_wire_frame(app, text_layout_id, mark_pos,
-                                      roundness, outline_thickness,
-                                      fcolor_id(defcolor_mark));
-            draw_character_wire_frame(app, text_layout_id, cursor_pos,
-                                      roundness, outline_thickness,
-                                      fcolor_id(defcolor_cursor, cursor_sub_id));
-        }
+#if 0
     }
+#endif
 }
 
 

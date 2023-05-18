@@ -947,6 +947,10 @@ isearch(Application_Links *app, Scan_Direction start_scan, i64 first_pos,
                 bar.prompt = rsearch_str;
             }break;
         }
+        
+        for (int i = 0; i < bar.string.size; i++) {
+            spirit_search_query[i] = (char)bar.string.str[i];
+        }
         isearch__update_highlight(app, view, Ii64_size(pos, match_size));
         
         in = get_next_input(app, EventPropertyGroup_Any, EventProperty_Escape);
@@ -1118,6 +1122,7 @@ isearch(Application_Links *app, Scan_Direction start_scan, i64 first_pos,
     }
     
     view_disable_highlight_range(app, view);
+    memset(spirit_search_query, 0, sizeof(char)*8192);
     
     if (in.abort){
         u64 size = bar.string.size;
@@ -1133,14 +1138,14 @@ isearch(Application_Links *app, Scan_Direction start_scan, i64 first_pos,
 function void
 isearch(Application_Links *app, Scan_Direction start_scan, String_Const_u8 query_init){
     View_ID view = get_active_view(app, Access_ReadVisible);
-    i64 pos = view_get_cursor_pos(app, view);;
+    i64 pos = view_get_cursor_pos(app, view);
     isearch(app, start_scan, pos, query_init);
 }
 
 function void
 isearch(Application_Links *app, Scan_Direction start_scan){
     View_ID view = get_active_view(app, Access_ReadVisible);
-    i64 pos = view_get_cursor_pos(app, view);;
+    i64 pos = view_get_cursor_pos(app, view);
     isearch(app, start_scan, pos, SCu8());
 }
 
@@ -1411,6 +1416,8 @@ CUSTOM_DOC("Read from the top of the point stack and jump there; if already ther
 
 ////////////////////////////////
 
+function Buffer_Kill_Result spirit_buffer_kill(Application_Links* app, Buffer_ID buffer_id, Buffer_Kill_Flag flags);
+
 function void
 delete_file_base(Application_Links *app, String_Const_u8 file_name, Buffer_ID buffer_id){
     String_Const_u8 path = string_remove_last_folder(file_name);
@@ -1426,7 +1433,7 @@ delete_file_base(Application_Links *app, String_Const_u8 file_name, Buffer_ID bu
     string_list_pushf(scratch, &list, "\"%.*s\"", string_expand(file_name));
     String_Const_u8 cmd = string_list_flatten(scratch, list, StringFill_NullTerminate);
     exec_system_command(app, 0, buffer_identifier(0), path, cmd, 0);
-    buffer_kill(app, buffer_id, BufferKill_AlwaysKill);
+    spirit_buffer_kill(app, buffer_id, BufferKill_AlwaysKill);
 }
 
 CUSTOM_COMMAND_SIG(delete_file_query)
@@ -1498,7 +1505,7 @@ CUSTOM_DOC("Queries the user for a file name and saves the contents of the curre
             if (buffer_save(app, buffer, new_file_name, BufferSave_IgnoreDirtyFlag)){
                 Buffer_ID new_buffer = create_buffer(app, new_file_name, BufferCreate_NeverNew|BufferCreate_JustChangedFile);
                 if (new_buffer != 0 && new_buffer != buffer){
-                    buffer_kill(app, buffer, BufferKill_AlwaysKill);
+                    spirit_buffer_kill(app, buffer, BufferKill_AlwaysKill);
                     view_set_buffer(app, view, new_buffer, 0);
                 }
             }

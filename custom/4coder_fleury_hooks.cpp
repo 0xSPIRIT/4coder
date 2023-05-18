@@ -99,6 +99,8 @@ F4_RenderBuffer(Application_Links *app, View_ID view_id, Face_ID face_id,
 		vim_draw_visual_mode(app, view_id, buffer, face_id, text_layout_id);
 	}
     
+	//spirit_draw_search_highlight(app, view_id, buffer, text_layout_id, 1);
+    
     // NOTE(rjf): Error annotations
 #if 0
     {

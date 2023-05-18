@@ -64,6 +64,7 @@ default_tab_width = 4;
 default_theme_name = "theme-handmade-hero";
 
 // Font
+//default_font_name = "BigBlue.ttf";
 default_font_name = "Liberation-Mono.ttf";
 default_font_size = 16;
 default_font_hinting = true;
@@ -88,4 +89,4 @@ default_flags_sh  = "-g";
 f4_disable_cursor_token_occurance = true;
 f4_disable_progress_bar = true;
 f4_poscontext_draw_at_bottom_of_buffer = false;
-highlight_line_at_cursor = true;
+highlight_line_at_cursor = false;

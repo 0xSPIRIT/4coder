@@ -234,6 +234,8 @@ lister_render(Application_Links *app, Frame_Info frame_info, View_ID view){
         push_fancy_string(scratch, &text_field, fcolor_id(defcolor_text_default),
                           lister->text_field.string);
         f32 width = get_fancy_line_width(app, face_id, &text_field);
+        f32 height = get_fancy_line_text_height(app, face_id, &text_field);
+        
         f32 cap_width = text_field_rect.x1 - p.x - 6.f;
         if (cap_width < width){
             Rect_f32 prect = draw_set_clip(app, Rf32(p.x, text_field_rect.y0, p.x + cap_width, text_field_rect.y1));
@@ -244,6 +246,10 @@ lister_render(Application_Links *app, Frame_Info frame_info, View_ID view){
         else{
             draw_fancy_line(app, face_id, fcolor_zero(), &text_field, p);
         }
+
+        // @SPIRIT Draw Cursor
+        Rect_f32 cursor_rect = {p.x+width, p.y, p.x+width+2, p.y+height};
+        draw_rectangle_fcolor(app, cursor_rect, 1, fcolor_id(defcolor_cursor));
     }
     
     

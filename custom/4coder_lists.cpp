@@ -77,10 +77,12 @@ generate_all_buffers_list(Application_Links *app, Lister *lister){
     }
 }
 
+#include "spirit_buffer_switch.h"
+
 function Buffer_ID
 get_buffer_from_user(Application_Links *app, String_Const_u8 query){
     Lister_Handlers handlers = lister_get_default_handlers();
-    handlers.refresh = generate_all_buffers_list;
+    handlers.refresh = spirit_generate_all_buffers_list; // @SPIRIT
     Lister_Result l_result = run_lister_with_refresh_handler(app, query, handlers);
     Buffer_ID result = 0;
     if (!l_result.canceled){
@@ -515,9 +517,11 @@ CUSTOM_UI_COMMAND_SIG(interactive_switch_buffer)
 CUSTOM_DOC("Interactively switch to an open buffer.")
 {
     Buffer_ID buffer = get_buffer_from_user(app, "Switch:");
+    // @SPIRIT
     if (buffer != 0){
         View_ID view = get_this_ctx_view(app, Access_Always);
         view_set_buffer(app, view, buffer, 0);
+        spirit_push_buffer(app, buffer);
     }
 }
 

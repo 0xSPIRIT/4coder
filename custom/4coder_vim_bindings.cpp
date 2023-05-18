@@ -2,6 +2,7 @@ CUSTOM_COMMAND_SIG(spirit_build);
 CUSTOM_COMMAND_SIG(vim_page_up);
 CUSTOM_COMMAND_SIG(vim_page_down);
 CUSTOM_COMMAND_SIG(spirit_toggle_poscontext);
+void spirit_push_jump(Application_Links *app, View_ID view);
     
 // TODO(BYP): Might want meta-data on these, for now I prefer the simplicity
 function void vim_map_set_binding(u32 mode, u32 sub_mode, void *func, u64 key){
@@ -54,6 +55,12 @@ function void vim_default_bindings(Application_Links *app, Key_Code leader){
     //VimBind(N|MAP, spirit_transpose_chars, Ctl|KeyCode_H);
 	
     VimBind(MAP, goto_line,              (Ctl|KeyCode_G));
+    
+    //VimBind(MAP, spirit_push_jump, Ctl|KeyCode_F10);
+    //VimBind(MAP, spirit_pop_jump, KeyCode_F10);
+    
+	VimBind(N|MAP, spirit_pop_jump,                     (Ctl|KeyCode_Comma));
+	VimBind(N|MAP, spirit_undo_pop_jump,                (Ctl|Sft|KeyCode_Comma));
     
 	VimBind(N|MAP, cursor_mark_swap,                  (Ctl|KeyCode_M));
     
@@ -167,7 +174,7 @@ function void vim_default_bindings(Application_Links *app, Key_Code leader){
 	VimBind(N|V|MAP, vim_select_register,             (Sft|KeyCode_Quote));
 	VimBind(N|MAP,   vim_toggle_char,                 (Sft|KeyCode_Tick));
 	VimBind(I|MAP,   vim_select_register,             (Ctl|KeyCode_R));
-	VimBind(I|MAP,   vim_delete_to_begin,             (Ctl|KeyCode_U));
+	//VimBind(I|MAP,   vim_delete_to_begin,             (Ctl|KeyCode_U));
 	VimBind(V|MAP,   vim_move_selection_up,           (Alt|KeyCode_K));
 	VimBind(V|MAP,   vim_move_selection_down,         (Alt|KeyCode_J));
     
@@ -201,7 +208,7 @@ function void vim_default_bindings(Application_Links *app, Key_Code leader){
 	VimBind(N|V|MAP, vim_backward_end,         SUB_G,      KeyCode_E);
 	VimBind(N|V|MAP, vim_backward_END,         SUB_G, (Sft|KeyCode_E));
     
-    VimBind(N|V|I|MAP, goto_jump_at_cursor, Ctl|KeyCode_Return);
+    VimBind(N|V|I|MAP, goto_jump_at_cursor_same_panel, Ctl|KeyCode_Return);
     
 	VimBind(N|V|MAP, vim_file_top,             SUB_G,     KeyCode_G);
 	VimBind(N|V|MAP, vim_goto_line,                   (Sft|KeyCode_G));
@@ -234,13 +241,11 @@ function void vim_default_bindings(Application_Links *app, Key_Code leader){
 	VimBind(N|MAP, vim_in_next_pattern,        SUB_G,      KeyCode_N);
 	VimBind(N|MAP, vim_in_prev_pattern,        SUB_G, (Sft|KeyCode_N));
     
-	VimBind(N|MAP, vim_prev_jump,                     (Ctl|KeyCode_Comma));
-	VimBind(N|MAP, vim_next_jump,                     (Ctl|Sft|KeyCode_Comma));
 	VimBind(N|MAP, vim_next_jump,                     (Sft|KeyCode_I));
 	//VimBind(N|MAP, vim_next_jump,                 (Ctl|Sft|KeyCode_I));
     
 	/// Screen Adjust Binds
-	VimBind(N|V|MAP, change_active_panel,             (Ctl|KeyCode_U));
+	VimBind(N|V|MAP, vim_change_active_panel,             (Ctl|KeyCode_U));
     
 	VimBind(N|V|MAP, delete_range,                    (Ctl|KeyCode_D));
 	VimBind(N|V|MAP, vim_page_up,                     (Ctl|KeyCode_B));

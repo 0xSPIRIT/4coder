@@ -90,6 +90,7 @@ CUSTOM_COMMAND_SIG(spirit_build)
     Face_Metrics metrics = get_face_metrics(app, face_id);
     
     view_set_split_pixel_size(app, global_compilation_view, (i32)(metrics.line_height*COMPILATION_HEIGHT));
+    global_compilation_view_expanded = 1;
     build_in_build_panel(app);
 }
 
@@ -99,13 +100,26 @@ CUSTOM_DOC("Expand the compilation window.")
     Buffer_ID buffer = view_get_buffer(app, global_compilation_view, Access_Always);
     Face_ID face_id = get_face_id(app, buffer);
     Face_Metrics metrics = get_face_metrics(app, face_id);
-    if(global_compilation_view_expanded ^= 1)
-    {
-        view_set_split_pixel_size(app, global_compilation_view, (i32)(metrics.line_height*28.f));
+    
+    switch (global_compilation_view_expanded) {
+        case 0: {global_compilation_view_expanded=1;} break;
+        case 1: {global_compilation_view_expanded=2;} break;
+        case 2: {global_compilation_view_expanded=0;} break;
     }
-    else
-    {
-        view_set_split_pixel_size(app, global_compilation_view, (i32)(metrics.line_height*COMPILATION_HEIGHT));
+        
+    switch (global_compilation_view_expanded) {
+        case 0: {
+            view_set_split_pixel_size(app, global_compilation_view, 0);
+            break;
+        }
+        case 1: {
+            view_set_split_pixel_size(app, global_compilation_view, (i32)(metrics.line_height*COMPILATION_HEIGHT));
+            break;
+        }
+        case 2: {
+            view_set_split_pixel_size(app, global_compilation_view, (i32)(metrics.line_height*28.f));
+            break;
+        }
     }
 }
 

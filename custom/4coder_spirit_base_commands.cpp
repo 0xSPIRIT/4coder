@@ -1,3 +1,11 @@
+CUSTOM_UI_COMMAND_SIG(vim_change_active_panel)
+CUSTOM_DOC("Does the same as change_active_panel but sets up the vim jumps as well.")
+{
+    View_ID view = get_active_view(app, Access_Always);
+    spirit_push_jump(app, view);
+    change_active_panel_send_command(app, 0);
+}
+
 function void string_copy(u8 *dst, const char *src) {
     while (1) {
         *dst++ = *src++;
@@ -10,12 +18,12 @@ CUSTOM_COMMAND_SIG(spirit_toggle_poscontext) {
 }
 
 CUSTOM_COMMAND_SIG(vim_page_up){
-    vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+    spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
     page_up(app);
 }
 
 CUSTOM_COMMAND_SIG(vim_page_down){
-    vim_push_jump(app, get_active_view(app, Access_ReadVisible));
+    spirit_push_jump(app, get_active_view(app, Access_ReadVisible));
     page_down(app);
 }
 
@@ -68,7 +76,7 @@ CUSTOM_COMMAND_SIG(spirit_close_compilation)
 CUSTOM_DOC("Closes fleury's compilation view. Use Ctrl+Shift+M to toggle back!")
 {
     view_set_split_pixel_size(app, global_compilation_view, 0);
-    global_compilation_view_expanded = 1;
+    global_compilation_view_expanded = 0;
 }
 
 CUSTOM_COMMAND_SIG(spirit_transpose_chars)
