@@ -646,9 +646,14 @@ CUSTOM_DOC("Fleury startup event")
         {
             load_project(app);
         }
-        Buffer_ID id = get_buffer_by_name(app, string_u8_litexpr("main.c"), Access_Always);
-        if (id != 0) {
-            view_set_buffer(app, view, id, 0);
+        Buffer_ID todo_id = get_buffer_by_name(app, string_u8_litexpr("todo.txt"), Access_Always);
+        if (todo_id != 0) {
+            view_set_buffer(app, view, todo_id, 0);
+        } else {
+            Buffer_ID id = get_buffer_by_name(app, string_u8_litexpr("main.c"), Access_Always);
+            if (id != 0) {
+                view_set_buffer(app, view, id, 0);
+            }
         }
     }
     
