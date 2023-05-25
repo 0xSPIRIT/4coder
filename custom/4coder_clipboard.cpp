@@ -127,6 +127,35 @@ CUSTOM_DOC("Cut the text in the range from the cursor to the mark onto the clipb
     }
 }
 
+CUSTOM_COMMAND_SIG(spirit_paste)
+CUSTOM_DOC("spirit's own paste functionality")
+{
+    View_ID view = get_active_view(app, Access_ReadWriteVisible);
+    if (!IsClipboardFormatAvailable(CF_TEXT) && OpenClipboard(NULL)) {
+        HANDLE hClipBoard = GetClipboardData(CF_TEXT);
+        
+        if (hClipBoard) {
+            char *data = (char*)GlobalLock(hClipBoard);
+            
+            String_Const_u8 string = {};
+            string.str = (u8*)data;
+            string.size = strlen(data);
+            
+            Buffer_ID buffer = view_get_buffer(app, view, Access_ReadWriteVisible);
+            
+            i64 pos = view_get_cursor_pos(app, view);
+            buffer_replace_range(app, buffer, Ii64(pos), string);
+            view_set_mark(app, view, seek_pos(pos));
+            view_set_cursor_and_preferred_x(app, view, seek_pos(pos + (i32)string.size));
+            
+            ARGB_Color argb = fcolor_resolve(fcolor_id(defcolor_paste));
+            buffer_post_fade(app, buffer, 0.667f, Ii64_size(pos, string.size), argb);
+        }
+        
+        CloseClipboard();
+    }
+}
+
 CUSTOM_COMMAND_SIG(paste)
 CUSTOM_DOC("At the cursor, insert the text at the top of the clipboard.")
 {

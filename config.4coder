@@ -64,7 +64,7 @@ default_tab_width = 4;
 default_theme_name = "theme-handmade-hero";
 
 // Font
-//default_font_name = "BigBlue.ttf";
+//default_font_name = "ModernDOS8x16.ttf";
 default_font_name = "Liberation-Mono.ttf";
 default_font_size = 16;
 default_font_hinting = true;

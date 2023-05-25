@@ -73,7 +73,7 @@ function void vim_default_bindings(Application_Links *app, Key_Code leader){
     
 	VimBind(N|MAP, spirit_substitute,                 (KeyCode_S));
     
-    VimBind(N|MAP, f4_code_peek, Ctl|KeyCode_X);
+    VimBind(N|MAP, cut, Ctl|KeyCode_X);
     
 	/// Rebinds
 	VimBind(N|MAP, auto_indent_line_at_cursor,        KeyCode_Tab);

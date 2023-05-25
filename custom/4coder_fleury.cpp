@@ -386,6 +386,7 @@
 #include <windows.h>
 typedef int socklen_t;
 #pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "user32.lib")
 #endif
 // }
 

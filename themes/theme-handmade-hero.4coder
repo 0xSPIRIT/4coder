@@ -14,7 +14,7 @@ defcolor_cursor                = defcolor_text_default;
 defcolor_insert_cursor_color   = 0xFFA00A0A; // 0xFFE2090C
 
 defcolor_at_cursor             = 0xFF0C0C0C;
-defcolor_highlight_cursor_line = 0xff190C0C; // Background of the active line in the editor
+defcolor_highlight_cursor_line = 0xff11111F; // Background of the active line in the editor
 defcolor_highlight             = 0xff315268; // Background of the active search string
 defcolor_at_highlight          = 0xffc4b82b; // Text of the active search string
 defcolor_mark                  = 0xFF494949;

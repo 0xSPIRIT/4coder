@@ -1,6 +1,2 @@
-- Implement emacs-like isearch.
-    x Add cursor to query bar
-    - Add highlight to the current search string.
-
 - Line wrapping on all *search* windows
 - Move by textual line

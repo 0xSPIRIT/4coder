@@ -43,7 +43,7 @@ set opts=%opts% %mode%
 set preproc_file=4coder_command_metadata.i
 set meta_opts=/P /Fi"%preproc_file%" /DMETA_PASS
 
-set build_dll=/LD /link /INCREMENTAL:NO /OPT:REF /RELEASE /PDBALTPATH:%%%%_PDB%%%%
+set build_dll=/LD /link user32.lib /INCREMENTAL:NO /OPT:REF /RELEASE /PDBALTPATH:%%%%_PDB%%%%
 set build_dll=%build_dll% /EXPORT:get_version /EXPORT:init_apis
 
 call cl %opts% %meta_opts% "%target%"

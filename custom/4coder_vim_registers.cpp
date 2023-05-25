@@ -73,6 +73,12 @@ function void vim_push_reg_cycle(Application_Links *app){
 }
 
 function void
+spirit_copy(Application_Links *app, Buffer_ID buffer, Range_i64 range) {
+    clipboard_post_buffer_range(app, 0, buffer, range);
+	buffer_post_fade(app, buffer, 0.667f, range, fcolor_resolve(fcolor_id(defcolor_paste)));
+}
+
+function void
 vim_copy(Application_Links *app, View_ID view, Buffer_ID buffer, Range_i64 range, Vim_Register *reg){
 	if(reg->flags & REGISTER_ReadOnly){
 		vim_state.chord_resolved = bitmask_2;
@@ -88,8 +94,9 @@ vim_copy(Application_Links *app, View_ID view, Buffer_ID buffer, Range_i64 range
 	if(size >= reg->data.cap){ valid = vim_realloc_string(&reg->data, size); }
 
 	if(!valid){ return; }
-
+    
     clipboard_post_buffer_range(app, 0, buffer, range); // @spirit - Also copy to the clipboard.
+    
 	buffer_read_range(app, buffer, range, reg->data.str + append*reg->data.size);
 	reg->data.size = size;
 
@@ -109,12 +116,6 @@ vim_copy(Application_Links *app, View_ID view, Buffer_ID buffer, Range_i64 range
 
 function void
 vim_paste(Application_Links *app, View_ID view, Buffer_ID buffer, Vim_Register *reg){
-    
-    if (vim_state.mode == VIM_Visual) {
-        // @spirit
-        // TODO(spirit): Remove the selection first.
-        __debugbreak();
-    }
     
 #if 0
 	if(reg->edit_type == EDIT_Block){ vim_block_paste(app, view, buffer, reg); return; }

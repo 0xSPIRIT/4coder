@@ -10,7 +10,8 @@ VIM_REQUEST_SIG(vim_apply_none){}
 VIM_REQUEST_SIG(vim_apply_yank){
 	if(vim_state.params.selected_reg){
 		vim_state.params.selected_reg->edit_type = vim_state.params.edit_type;
-		vim_copy(app, view, buffer, range, vim_state.params.selected_reg);
+        spirit_copy(app, buffer, range);
+		//vim_copy(app, view, buffer, range, vim_state.params.selected_reg);
 	}
 }
 
@@ -25,6 +26,7 @@ VIM_REQUEST_SIG(vim_apply_delete){
 		vim_register_copy(dst, vim_state.params.selected_reg);
 		vim_update_registers(app);
 	}
+    spirit_copy(app, buffer, range);
 	buffer_replace_range(app, buffer, range, string_u8_empty);
 	if(vim_state.params.edit_type == EDIT_LineWise){
 		i64 pos = get_line_side_pos_from_pos(app, buffer, view_get_cursor_pos(app, view), Side_Min);
