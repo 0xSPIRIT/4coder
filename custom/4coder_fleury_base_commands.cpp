@@ -92,6 +92,7 @@ CUSTOM_COMMAND_SIG(spirit_build)
     Buffer_Scroll scroll = view_get_buffer_scroll(app, global_compilation_view);
     scroll.target.pixel_shift.x = 0;
     scroll.target.pixel_shift.y = 0;
+    scroll.position = scroll.target;
     
     view_set_split_pixel_size(app, global_compilation_view, (i32)(metrics.line_height*COMPILATION_HEIGHT));
     global_compilation_view_expanded = 1;
