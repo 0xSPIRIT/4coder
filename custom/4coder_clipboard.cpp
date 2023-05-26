@@ -136,12 +136,8 @@ CUSTOM_DOC("Spirit's own paste implementation using win32")
     if (a && b) {
         HANDLE hClipBoard = GetClipboardData(CF_TEXT);
         
-        MessageBox(NULL, "Got here!", "Info", MB_OK);
-        
         if (hClipBoard) {
             char *data = (char*)GlobalLock(hClipBoard);
-            
-            MessageBox(NULL, data, "Clipboard Data", MB_OK);
             
             String_Const_u8 string = {};
             string.str = (u8*)data;
@@ -174,6 +170,9 @@ CUSTOM_DOC("Spirit's own paste & indent implementation using win32")
 CUSTOM_COMMAND_SIG(paste)
 CUSTOM_DOC("At the cursor, insert the text at the top of the clipboard.")
 {
+    // @spirit Redirect to my paste
+    spirit_paste(app);
+#if 0
     clipboard_update_history_from_system(app, 0);
     i32 count = clipboard_count(0);
     if (count > 0){
@@ -203,6 +202,7 @@ CUSTOM_DOC("At the cursor, insert the text at the top of the clipboard.")
             }
         }
     }
+#endif
 }
 
 CUSTOM_COMMAND_SIG(paste_next)
@@ -251,8 +251,12 @@ CUSTOM_DOC("If the previous command was paste or paste_next, replaces the paste 
 CUSTOM_COMMAND_SIG(paste_and_indent)
 CUSTOM_DOC("Paste from the top of clipboard and run auto-indent on the newly pasted text.")
 {
+    // @SPIRIT Redirect to my paste
+    spirit_paste_and_indent(app);
+#if 0
     paste(app);
     auto_indent_range(app);
+#endif
 }
 
 CUSTOM_COMMAND_SIG(paste_next_and_indent)
