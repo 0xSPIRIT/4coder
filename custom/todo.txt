@@ -1,2 +1,3 @@
+- Upon jumping M-n or M-p, our spirit buffer is not set.
 - Line wrapping on all *search* windows
 - Move by textual line

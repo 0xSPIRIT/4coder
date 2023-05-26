@@ -2,7 +2,7 @@
 #define command_id(c) (fcoder_metacmd_ID_##c)
 #define command_metadata(c) (&fcoder_metacmd_table[command_id(c)])
 #define command_metadata_by_id(id) (&fcoder_metacmd_table[id])
-#define command_one_past_last_id 390
+#define command_one_past_last_id 391
 #if defined(CUSTOM_COMMAND_SIG)
 #define PROC_LINKS(x,y) x
 #else
@@ -335,6 +335,7 @@ CUSTOM_COMMAND_SIG(spirit_open_project);
 CUSTOM_COMMAND_SIG(spirit_open_search);
 CUSTOM_COMMAND_SIG(spirit_open_url_line);
 CUSTOM_COMMAND_SIG(spirit_paste);
+CUSTOM_COMMAND_SIG(spirit_paste_and_indent);
 CUSTOM_COMMAND_SIG(spirit_replace_line);
 CUSTOM_COMMAND_SIG(spirit_substitute);
 CUSTOM_COMMAND_SIG(spirit_swap_insert_cursor_type);
@@ -411,7 +412,7 @@ char *source_name;
 i32 source_name_len;
 i32 line_number;
 };
-static Command_Metadata fcoder_metacmd_table[390] = {
+static Command_Metadata fcoder_metacmd_table[391] = {
 { PROC_LINKS(allow_mouse, 0), false, "allow_mouse", 11, "Shows the mouse and causes all mouse input to be processed normally.", 68, "D:\\Programs\\4codervim\\custom\\4coder_default_framework.cpp", 57, 481 },
 { PROC_LINKS(auto_indent_line_at_cursor, 0), false, "auto_indent_line_at_cursor", 26, "Auto-indents the line on which the cursor sits.", 47, "D:\\Programs\\4codervim\\custom\\4coder_auto_indent.cpp", 51, 420 },
 { PROC_LINKS(auto_indent_range, 0), false, "auto_indent_range", 17, "Auto-indents the range between the cursor and the mark.", 55, "D:\\Programs\\4codervim\\custom\\4coder_auto_indent.cpp", 51, 430 },
@@ -441,7 +442,7 @@ static Command_Metadata fcoder_metacmd_table[390] = {
 { PROC_LINKS(clean_all_lines, 0), false, "clean_all_lines", 15, "Removes trailing whitespace from all lines and removes all blank lines in the current buffer.", 93, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 668 },
 { PROC_LINKS(clean_trailing_whitespace, 0), false, "clean_trailing_whitespace", 25, "Removes trailing whitespace from all lines in the current buffer.", 65, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 677 },
 { PROC_LINKS(clear_all_themes, 0), false, "clear_all_themes", 16, "Clear the theme list", 20, "D:\\Programs\\4codervim\\custom\\4coder_default_framework.cpp", 57, 565 },
-{ PROC_LINKS(clear_clipboard, 0), false, "clear_clipboard", 15, "Clears the history of the clipboard", 35, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 250 },
+{ PROC_LINKS(clear_clipboard, 0), false, "clear_clipboard", 15, "Clears the history of the clipboard", 35, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 265 },
 { PROC_LINKS(click_set_cursor, 0), false, "click_set_cursor", 16, "Sets the cursor position to the mouse position.", 47, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 240 },
 { PROC_LINKS(click_set_cursor_and_mark, 0), false, "click_set_cursor_and_mark", 25, "Sets the cursor position and mark to the mouse position.", 56, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 225 },
 { PROC_LINKS(click_set_cursor_if_lbutton, 0), false, "click_set_cursor_if_lbutton", 27, "If the mouse left button is pressed, sets the cursor position to the mouse position.", 84, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 255 },
@@ -628,9 +629,9 @@ static Command_Metadata fcoder_metacmd_table[390] = {
 { PROC_LINKS(move_up_to_blank_line, 0), false, "move_up_to_blank_line", 21, "Seeks the cursor up to the next blank line.", 43, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 427 },
 { PROC_LINKS(move_up_to_blank_line_end, 0), false, "move_up_to_blank_line_end", 25, "Seeks the cursor up to the next blank line and places it at the end of the line.", 80, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 451 },
 { PROC_LINKS(move_up_to_blank_line_skip_whitespace, 0), false, "move_up_to_blank_line_skip_whitespace", 37, "Seeks the cursor up to the next blank line and places it at the end of the line.", 80, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 439 },
-{ PROC_LINKS(multi_paste, 0), false, "multi_paste", 11, "Paste multiple entries from the clipboard at once", 49, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 258 },
-{ PROC_LINKS(multi_paste_interactive, 0), false, "multi_paste_interactive", 23, "Paste multiple lines from the clipboard history, controlled with arrow keys", 75, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 400 },
-{ PROC_LINKS(multi_paste_interactive_quick, 0), false, "multi_paste_interactive_quick", 29, "Paste multiple lines from the clipboard history, controlled by inputing the number of lines to paste", 100, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 409 },
+{ PROC_LINKS(multi_paste, 0), false, "multi_paste", 11, "Paste multiple entries from the clipboard at once", 49, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 273 },
+{ PROC_LINKS(multi_paste_interactive, 0), false, "multi_paste_interactive", 23, "Paste multiple lines from the clipboard history, controlled with arrow keys", 75, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 415 },
+{ PROC_LINKS(multi_paste_interactive_quick, 0), false, "multi_paste_interactive_quick", 29, "Paste multiple lines from the clipboard history, controlled by inputing the number of lines to paste", 100, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 424 },
 { PROC_LINKS(music_start, 0), false, "music_start", 11, "Starts the music.", 17, "D:\\Programs\\4codervim\\custom\\4coder_examples.cpp", 48, 213 },
 { PROC_LINKS(music_stop, 0), false, "music_stop", 10, "Stops the music.", 16, "D:\\Programs\\4codervim\\custom\\4coder_examples.cpp", 48, 234 },
 { PROC_LINKS(no_op, 0), false, "no_op", 5, "no op for binding keybinds to resolve without side effect", 57, "D:\\Programs\\4codervim\\custom\\4coder_vim_helper.cpp", 50, 2 },
@@ -646,10 +647,10 @@ static Command_Metadata fcoder_metacmd_table[390] = {
 { PROC_LINKS(open_panel_vsplit, 0), false, "open_panel_vsplit", 17, "Create a new panel by vertically splitting the active panel.", 60, "D:\\Programs\\4codervim\\custom\\4coder_default_framework.cpp", 57, 372 },
 { PROC_LINKS(page_down, 0), false, "page_down", 9, "Scrolls the view down one view height and moves the cursor down one view height.", 80, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 398 },
 { PROC_LINKS(page_up, 0), false, "page_up", 7, "Scrolls the view up one view height and moves the cursor up one view height.", 76, "D:\\Programs\\4codervim\\custom\\4coder_base_commands.cpp", 53, 390 },
-{ PROC_LINKS(paste, 0), false, "paste", 5, "At the cursor, insert the text at the top of the clipboard.", 59, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 159 },
-{ PROC_LINKS(paste_and_indent, 0), false, "paste_and_indent", 16, "Paste from the top of clipboard and run auto-indent on the newly pasted text.", 77, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 236 },
-{ PROC_LINKS(paste_next, 0), false, "paste_next", 10, "If the previous command was paste or paste_next, replaces the paste range with the next text down on the clipboard, otherwise operates as the paste command.", 156, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 193 },
-{ PROC_LINKS(paste_next_and_indent, 0), false, "paste_next_and_indent", 21, "Paste the next item on the clipboard and run auto-indent on the newly pasted text.", 82, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 243 },
+{ PROC_LINKS(paste, 0), false, "paste", 5, "At the cursor, insert the text at the top of the clipboard.", 59, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 174 },
+{ PROC_LINKS(paste_and_indent, 0), false, "paste_and_indent", 16, "Paste from the top of clipboard and run auto-indent on the newly pasted text.", 77, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 251 },
+{ PROC_LINKS(paste_next, 0), false, "paste_next", 10, "If the previous command was paste or paste_next, replaces the paste range with the next text down on the clipboard, otherwise operates as the paste command.", 156, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 208 },
+{ PROC_LINKS(paste_next_and_indent, 0), false, "paste_next_and_indent", 21, "Paste the next item on the clipboard and run auto-indent on the newly pasted text.", 82, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 258 },
 { PROC_LINKS(place_in_scope, 0), false, "place_in_scope", 14, "Wraps the code contained in the range between cursor and mark with a new curly brace scope.", 91, "D:\\Programs\\4codervim\\custom\\4coder_scope_commands.cpp", 54, 106 },
 { PROC_LINKS(play_with_a_counter, 0), false, "play_with_a_counter", 19, "Example of query bar", 20, "D:\\Programs\\4codervim\\custom\\4coder_examples.cpp", 48, 29 },
 { PROC_LINKS(profile_clear, 0), false, "profile_clear", 13, "Clear all profiling information from 4coder's self profiler.", 60, "D:\\Programs\\4codervim\\custom\\4coder_profile.cpp", 47, 226 },
@@ -737,7 +738,8 @@ static Command_Metadata fcoder_metacmd_table[390] = {
 { PROC_LINKS(spirit_open_project, 0), true, "spirit_open_project", 19, "Open a project by navigating to the project file.", 49, "D:\\Programs\\4codervim\\custom\\4coder_spirit_base_commands.cpp", 60, 162 },
 { PROC_LINKS(spirit_open_search, 0), true, "spirit_open_search", 18, "Switches to the search buffer in another panel", 46, "D:\\Programs\\4codervim\\custom\\4coder_spirit_base_commands.cpp", 60, 156 },
 { PROC_LINKS(spirit_open_url_line, 0), false, "spirit_open_url_line", 20, "Open URL at line.", 17, "D:\\Programs\\4codervim\\custom\\4coder_spirit_base_commands.cpp", 60, 114 },
-{ PROC_LINKS(spirit_paste, 0), false, "spirit_paste", 12, "spirit's own paste functionality", 32, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 130 },
+{ PROC_LINKS(spirit_paste, 0), false, "spirit_paste", 12, "Spirit's own paste implementation using win32", 45, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 130 },
+{ PROC_LINKS(spirit_paste_and_indent, 0), false, "spirit_paste_and_indent", 23, "Spirit's own paste & indent implementation using win32", 54, "D:\\Programs\\4codervim\\custom\\4coder_clipboard.cpp", 49, 167 },
 { PROC_LINKS(spirit_replace_line, 0), false, "spirit_replace_line", 19, "Replaces a line with nothing, auto-indents, and puts you into insert mode.", 74, "D:\\Programs\\4codervim\\custom\\4coder_vim.cpp", 43, 46 },
 { PROC_LINKS(spirit_substitute, 0), false, "spirit_substitute", 17, "Deletes char at cursor then goes into insert mode.", 50, "D:\\Programs\\4codervim\\custom\\4coder_vim.cpp", 43, 1 },
 { PROC_LINKS(spirit_swap_insert_cursor_type, 0), false, "spirit_swap_insert_cursor_type", 30, "Queries for a system command, runs the system command as a CLI and prints the output to the a new buffer.", 105, "D:\\Programs\\4codervim\\custom\\4coder_spirit_base_commands.cpp", 60, 30 },
@@ -1129,68 +1131,69 @@ static i32 fcoder_metacmd_ID_spirit_open_project = 322;
 static i32 fcoder_metacmd_ID_spirit_open_search = 323;
 static i32 fcoder_metacmd_ID_spirit_open_url_line = 324;
 static i32 fcoder_metacmd_ID_spirit_paste = 325;
-static i32 fcoder_metacmd_ID_spirit_replace_line = 326;
-static i32 fcoder_metacmd_ID_spirit_substitute = 327;
-static i32 fcoder_metacmd_ID_spirit_swap_insert_cursor_type = 328;
-static i32 fcoder_metacmd_ID_spirit_transpose_chars = 329;
-static i32 fcoder_metacmd_ID_string_repeat = 330;
-static i32 fcoder_metacmd_ID_suppress_mouse = 331;
-static i32 fcoder_metacmd_ID_swap_panels = 332;
-static i32 fcoder_metacmd_ID_switch_to_keybinding_0 = 333;
-static i32 fcoder_metacmd_ID_switch_to_keybinding_1 = 334;
-static i32 fcoder_metacmd_ID_switch_to_keybinding_2 = 335;
-static i32 fcoder_metacmd_ID_switch_to_keybinding_3 = 336;
-static i32 fcoder_metacmd_ID_theme_lister = 337;
-static i32 fcoder_metacmd_ID_to_lowercase = 338;
-static i32 fcoder_metacmd_ID_to_uppercase = 339;
-static i32 fcoder_metacmd_ID_toggle_command_server = 340;
-static i32 fcoder_metacmd_ID_toggle_filebar = 341;
-static i32 fcoder_metacmd_ID_toggle_fps_meter = 342;
-static i32 fcoder_metacmd_ID_toggle_fullscreen = 343;
-static i32 fcoder_metacmd_ID_toggle_highlight_enclosing_scopes = 344;
-static i32 fcoder_metacmd_ID_toggle_highlight_line_at_cursor = 345;
-static i32 fcoder_metacmd_ID_toggle_line_numbers = 346;
-static i32 fcoder_metacmd_ID_toggle_line_wrap = 347;
-static i32 fcoder_metacmd_ID_toggle_mouse = 348;
-static i32 fcoder_metacmd_ID_toggle_paren_matching_helper = 349;
-static i32 fcoder_metacmd_ID_toggle_show_whitespace = 350;
-static i32 fcoder_metacmd_ID_toggle_virtual_whitespace = 351;
-static i32 fcoder_metacmd_ID_tutorial_maximize = 352;
-static i32 fcoder_metacmd_ID_tutorial_minimize = 353;
-static i32 fcoder_metacmd_ID_uncomment_line = 354;
-static i32 fcoder_metacmd_ID_undo = 355;
-static i32 fcoder_metacmd_ID_undo_all_buffers = 356;
-static i32 fcoder_metacmd_ID_view_buffer_other_panel = 357;
-static i32 fcoder_metacmd_ID_view_jump_list_with_lister = 358;
-static i32 fcoder_metacmd_ID_vim_change_active_panel = 359;
-static i32 fcoder_metacmd_ID_vim_command_mode = 360;
-static i32 fcoder_metacmd_ID_vim_dec_buffer_peek = 361;
-static i32 fcoder_metacmd_ID_vim_inc_buffer_peek = 362;
-static i32 fcoder_metacmd_ID_vim_interactive_open_or_new = 363;
-static i32 fcoder_metacmd_ID_vim_jump_lister = 364;
-static i32 fcoder_metacmd_ID_vim_list_all_functions_current_buffer_lister = 365;
-static i32 fcoder_metacmd_ID_vim_proj_cmd_lister = 366;
-static i32 fcoder_metacmd_ID_vim_scoll_buffer_peek_down = 367;
-static i32 fcoder_metacmd_ID_vim_scoll_buffer_peek_up = 368;
-static i32 fcoder_metacmd_ID_vim_switch_lister = 369;
-static i32 fcoder_metacmd_ID_vim_theme_lister = 370;
-static i32 fcoder_metacmd_ID_vim_toggle_relative_line_num = 371;
-static i32 fcoder_metacmd_ID_vim_toggle_show_buffer_peek = 372;
-static i32 fcoder_metacmd_ID_vim_try_exit = 373;
-static i32 fcoder_metacmd_ID_vim_view_input_handler = 374;
-static i32 fcoder_metacmd_ID_vs = 375;
-static i32 fcoder_metacmd_ID_w = 376;
-static i32 fcoder_metacmd_ID_word_complete = 377;
-static i32 fcoder_metacmd_ID_word_complete_drop_down = 378;
-static i32 fcoder_metacmd_ID_wq = 379;
-static i32 fcoder_metacmd_ID_wqa = 380;
-static i32 fcoder_metacmd_ID_write_block = 381;
-static i32 fcoder_metacmd_ID_write_hack = 382;
-static i32 fcoder_metacmd_ID_write_note = 383;
-static i32 fcoder_metacmd_ID_write_space = 384;
-static i32 fcoder_metacmd_ID_write_text_and_auto_indent = 385;
-static i32 fcoder_metacmd_ID_write_text_input = 386;
-static i32 fcoder_metacmd_ID_write_todo = 387;
-static i32 fcoder_metacmd_ID_write_underscore = 388;
-static i32 fcoder_metacmd_ID_write_zero_struct = 389;
+static i32 fcoder_metacmd_ID_spirit_paste_and_indent = 326;
+static i32 fcoder_metacmd_ID_spirit_replace_line = 327;
+static i32 fcoder_metacmd_ID_spirit_substitute = 328;
+static i32 fcoder_metacmd_ID_spirit_swap_insert_cursor_type = 329;
+static i32 fcoder_metacmd_ID_spirit_transpose_chars = 330;
+static i32 fcoder_metacmd_ID_string_repeat = 331;
+static i32 fcoder_metacmd_ID_suppress_mouse = 332;
+static i32 fcoder_metacmd_ID_swap_panels = 333;
+static i32 fcoder_metacmd_ID_switch_to_keybinding_0 = 334;
+static i32 fcoder_metacmd_ID_switch_to_keybinding_1 = 335;
+static i32 fcoder_metacmd_ID_switch_to_keybinding_2 = 336;
+static i32 fcoder_metacmd_ID_switch_to_keybinding_3 = 337;
+static i32 fcoder_metacmd_ID_theme_lister = 338;
+static i32 fcoder_metacmd_ID_to_lowercase = 339;
+static i32 fcoder_metacmd_ID_to_uppercase = 340;
+static i32 fcoder_metacmd_ID_toggle_command_server = 341;
+static i32 fcoder_metacmd_ID_toggle_filebar = 342;
+static i32 fcoder_metacmd_ID_toggle_fps_meter = 343;
+static i32 fcoder_metacmd_ID_toggle_fullscreen = 344;
+static i32 fcoder_metacmd_ID_toggle_highlight_enclosing_scopes = 345;
+static i32 fcoder_metacmd_ID_toggle_highlight_line_at_cursor = 346;
+static i32 fcoder_metacmd_ID_toggle_line_numbers = 347;
+static i32 fcoder_metacmd_ID_toggle_line_wrap = 348;
+static i32 fcoder_metacmd_ID_toggle_mouse = 349;
+static i32 fcoder_metacmd_ID_toggle_paren_matching_helper = 350;
+static i32 fcoder_metacmd_ID_toggle_show_whitespace = 351;
+static i32 fcoder_metacmd_ID_toggle_virtual_whitespace = 352;
+static i32 fcoder_metacmd_ID_tutorial_maximize = 353;
+static i32 fcoder_metacmd_ID_tutorial_minimize = 354;
+static i32 fcoder_metacmd_ID_uncomment_line = 355;
+static i32 fcoder_metacmd_ID_undo = 356;
+static i32 fcoder_metacmd_ID_undo_all_buffers = 357;
+static i32 fcoder_metacmd_ID_view_buffer_other_panel = 358;
+static i32 fcoder_metacmd_ID_view_jump_list_with_lister = 359;
+static i32 fcoder_metacmd_ID_vim_change_active_panel = 360;
+static i32 fcoder_metacmd_ID_vim_command_mode = 361;
+static i32 fcoder_metacmd_ID_vim_dec_buffer_peek = 362;
+static i32 fcoder_metacmd_ID_vim_inc_buffer_peek = 363;
+static i32 fcoder_metacmd_ID_vim_interactive_open_or_new = 364;
+static i32 fcoder_metacmd_ID_vim_jump_lister = 365;
+static i32 fcoder_metacmd_ID_vim_list_all_functions_current_buffer_lister = 366;
+static i32 fcoder_metacmd_ID_vim_proj_cmd_lister = 367;
+static i32 fcoder_metacmd_ID_vim_scoll_buffer_peek_down = 368;
+static i32 fcoder_metacmd_ID_vim_scoll_buffer_peek_up = 369;
+static i32 fcoder_metacmd_ID_vim_switch_lister = 370;
+static i32 fcoder_metacmd_ID_vim_theme_lister = 371;
+static i32 fcoder_metacmd_ID_vim_toggle_relative_line_num = 372;
+static i32 fcoder_metacmd_ID_vim_toggle_show_buffer_peek = 373;
+static i32 fcoder_metacmd_ID_vim_try_exit = 374;
+static i32 fcoder_metacmd_ID_vim_view_input_handler = 375;
+static i32 fcoder_metacmd_ID_vs = 376;
+static i32 fcoder_metacmd_ID_w = 377;
+static i32 fcoder_metacmd_ID_word_complete = 378;
+static i32 fcoder_metacmd_ID_word_complete_drop_down = 379;
+static i32 fcoder_metacmd_ID_wq = 380;
+static i32 fcoder_metacmd_ID_wqa = 381;
+static i32 fcoder_metacmd_ID_write_block = 382;
+static i32 fcoder_metacmd_ID_write_hack = 383;
+static i32 fcoder_metacmd_ID_write_note = 384;
+static i32 fcoder_metacmd_ID_write_space = 385;
+static i32 fcoder_metacmd_ID_write_text_and_auto_indent = 386;
+static i32 fcoder_metacmd_ID_write_text_input = 387;
+static i32 fcoder_metacmd_ID_write_todo = 388;
+static i32 fcoder_metacmd_ID_write_underscore = 389;
+static i32 fcoder_metacmd_ID_write_zero_struct = 390;
 #endif

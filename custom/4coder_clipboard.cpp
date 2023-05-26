@@ -128,14 +128,20 @@ CUSTOM_DOC("Cut the text in the range from the cursor to the mark onto the clipb
 }
 
 CUSTOM_COMMAND_SIG(spirit_paste)
-CUSTOM_DOC("spirit's own paste functionality")
+CUSTOM_DOC("Spirit's own paste implementation using win32")
 {
     View_ID view = get_active_view(app, Access_ReadWriteVisible);
-    if (!IsClipboardFormatAvailable(CF_TEXT) && OpenClipboard(NULL)) {
+    int a = IsClipboardFormatAvailable(CF_TEXT);
+    int b = OpenClipboard(NULL);
+    if (a && b) {
         HANDLE hClipBoard = GetClipboardData(CF_TEXT);
+        
+        MessageBox(NULL, "Got here!", "Info", MB_OK);
         
         if (hClipBoard) {
             char *data = (char*)GlobalLock(hClipBoard);
+            
+            MessageBox(NULL, data, "Clipboard Data", MB_OK);
             
             String_Const_u8 string = {};
             string.str = (u8*)data;
@@ -150,10 +156,19 @@ CUSTOM_DOC("spirit's own paste functionality")
             
             ARGB_Color argb = fcolor_resolve(fcolor_id(defcolor_paste));
             buffer_post_fade(app, buffer, 0.667f, Ii64_size(pos, string.size), argb);
+            
+            GlobalUnlock(hClipBoard);
         }
         
         CloseClipboard();
     }
+}
+
+CUSTOM_COMMAND_SIG(spirit_paste_and_indent)
+CUSTOM_DOC("Spirit's own paste & indent implementation using win32")
+{
+    spirit_paste(app);
+    auto_indent_range(app);
 }
 
 CUSTOM_COMMAND_SIG(paste)

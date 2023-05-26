@@ -530,11 +530,11 @@ VIM_COMMAND_SIG(vim_paste_after){
 			seek_end_of_line(app);
 			move_right(app);
 			//vim_paste(app, view, buffer, vim_state.params.selected_reg);
-            paste_and_indent(app);
+            spirit_paste_and_indent(app);
 			move_up(app);
 		}else{
 			move_right(app);
-            paste(app);
+            spirit_paste_and_indent(app);
 			//vim_paste(app, view, buffer, vim_state.params.selected_reg);
 		}
 
@@ -555,7 +555,7 @@ VIM_COMMAND_SIG(vim_paste_before){
 		//View_ID view = get_active_view(app, Access_ReadVisible);
 		//Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
 		//vim_paste(app, view, buffer, vim_state.params.selected_reg);
-        paste_and_indent(app);
+        spirit_paste_and_indent(app);
 
 #if 0
 		Vim_Register *reg = vim_state.prev_params.selected_reg;
