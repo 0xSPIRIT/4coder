@@ -15,4 +15,4 @@ struct Spirit_Jump_Stack {
 
 global Spirit_Jump_Stack jump_stack = {0};
 
-function void spirit_push_jump(Application_Links *app, View_ID view);
+void spirit_push_jump(Application_Links *app, View_ID view);

@@ -2,7 +2,7 @@
 
 #include "spirit_jumps.h"
 
-function void spirit_go_to_jump(Application_Links *app, Spirit_Jump_Point point) {
+void spirit_go_to_jump(Application_Links *app, Spirit_Jump_Point point) {
     view_set_active(app, point.view);
     view_set_buffer(app, point.view, point.loc.buffer_id, 0);
     
@@ -15,7 +15,7 @@ function void spirit_go_to_jump(Application_Links *app, Spirit_Jump_Point point)
     view_set_cursor(app, point.view, seek);
 }
 
-function void spirit_push_jump(Application_Links *app, View_ID view) {
+void spirit_push_jump(Application_Links *app, View_ID view) {
     Spirit_Jump_Point point;
     
     Buffer_ID buffer = view_get_buffer(app, view, Access_Always);

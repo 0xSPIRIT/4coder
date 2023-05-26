@@ -89,6 +89,10 @@ CUSTOM_COMMAND_SIG(spirit_build)
     Face_ID face_id = get_face_id(app, buffer);
     Face_Metrics metrics = get_face_metrics(app, face_id);
     
+    Buffer_Scroll scroll = view_get_buffer_scroll(app, global_compilation_view);
+    scroll.target.pixel_shift.x = 0;
+    scroll.target.pixel_shift.y = 0;
+    
     view_set_split_pixel_size(app, global_compilation_view, (i32)(metrics.line_height*COMPILATION_HEIGHT));
     global_compilation_view_expanded = 1;
     build_in_build_panel(app);

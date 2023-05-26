@@ -405,6 +405,16 @@ internal void
 goto_jump_in_order(Application_Links *app, Marker_List *list, View_ID jump_view, ID_Pos_Jump_Location location){
     Buffer_ID buffer = {};
     if (get_jump_buffer(app, &buffer, &location)){
+        // @spirit
+        {
+            View_ID old_view = get_active_view(app, Access_ReadVisible);
+            Buffer_ID old_buffer =  view_get_buffer(app, old_view, Access_ReadVisible);
+            if (buffer != old_buffer) {
+                spirit_push_jump(app, old_view);
+                spirit_push_buffer(app, buffer);
+            }
+        }
+        
         View_ID target_view = get_active_view(app, Access_Always);
         if (target_view == jump_view){
             change_active_panel(app);

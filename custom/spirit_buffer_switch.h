@@ -12,4 +12,3 @@ global i32 spirit_switcher_count = 0;
 
 void spirit_push_buffer(Application_Links *app, Buffer_ID id);
 function void spirit_generate_all_buffers_list(Application_Links *app, Lister *lister);
-    

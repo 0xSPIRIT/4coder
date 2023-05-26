@@ -1541,6 +1541,8 @@ CUSTOM_DOC("Queries the user for a new name and renames the file of the current 
                 Buffer_ID new_buffer = create_buffer(app, new_file_name, BufferCreate_NeverNew|BufferCreate_JustChangedFile);
                 if (new_buffer != 0 && new_buffer != buffer){
                     delete_file_base(app, file_name, buffer);
+                    void spirit_push_buffer(Application_Links *app, Buffer_ID id);
+                    spirit_push_buffer(app, buffer);
                     view_set_buffer(app, view, new_buffer, 0);
                 }
             }
@@ -1629,6 +1631,10 @@ CUSTOM_DOC("Delete the line the on which the cursor sits.")
 
 ////////////////////////////////
 
+// @spirit ew
+void spirit_push_buffer(Application_Links *app, Buffer_ID id);
+void spirit_push_jump(Application_Links *app, View_ID view);
+
 CUSTOM_COMMAND_SIG(open_file_in_quotes)
 CUSTOM_DOC("Reads a filename from surrounding '\"' characters and attempts to open the corresponding file.")
 {
@@ -1651,6 +1657,9 @@ CUSTOM_DOC("Reads a filename from surrounding '\"' characters and attempts to op
         }
         
         String_Const_u8 new_file_name = push_u8_stringf(scratch, "%.*s/%.*s", string_expand(path), string_expand(quoted_name));
+            
+        spirit_push_buffer(app, buffer);
+        spirit_push_jump(app, view);
         
         view = get_next_view_looped_primary_panels(app, view, Access_Always);
         if (view != 0){
